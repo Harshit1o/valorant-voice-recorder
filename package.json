@@ -69,24 +69,16 @@
     "win": {
       "target": [
         {
-          "target": "nsis",
-          "arch": ["x64", "ia32"]
+          "target": "squirrel",
+          "arch": ["x64"]
         },
         {
           "target": "portable",
-          "arch": ["x64", "ia32"]
+          "arch": ["x64"]
         }
       ],
       "requestedExecutionLevel": "requireAdministrator",
       "publisherName": "Valorant Voice Recorder"
-    },
-    "nsis": {
-      "oneClick": false,
-      "perMachine": true,
-      "allowToChangeInstallationDirectory": true,
-      "createDesktopShortcut": true,
-      "createStartMenuShortcut": true,
-      "shortcutName": "Valorant Voice Recorder"
     },
     "mac": {
       "target": "dmg",

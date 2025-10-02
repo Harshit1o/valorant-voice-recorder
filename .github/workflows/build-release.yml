@@ -55,6 +55,13 @@ jobs:
     - name: Build TypeScript
       run: npm run build
 
+    - name: Remove problematic build files
+      run: |
+        if (Test-Path "build") { Remove-Item -Recurse -Force "build" }
+        if (Test-Path "build/installer.nsh") { Remove-Item -Force "build/installer.nsh" }
+        if (Test-Path "build/LICENSE.txt") { Remove-Item -Force "build/LICENSE.txt" }
+      shell: pwsh
+
     - name: Build Electron app (Windows)
       run: npm run dist:win
       env:
