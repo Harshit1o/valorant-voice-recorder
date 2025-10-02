@@ -1,0 +1,113 @@
+{
+  "name": "electron-audio-recorder-sdk",
+  "version": "1.0.0",
+  "description": "An Electron-based SDK for recording audio from microphone with cross-platform desktop support",
+  "main": "dist/main.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist/**/*",
+    "preload/**/*"
+  ],
+  "scripts": {
+    "build": "tsc && tsc -p tsconfig.preload.json",
+    "dev": "tsc --watch",
+    "electron": "electron .",
+    "electron-dev": "npm run build && electron .",
+    "start": "npm run electron-dev",
+    "package": "electron-builder",
+    "prepare": "npm run build",
+    "dist": "npm run build && electron-builder",
+    "dist:win": "npm run build && electron-builder --win",
+    "dist:mac": "npm run build && electron-builder --mac",
+    "dist:linux": "npm run build && electron-builder --linux",
+    "dist:all": "npm run build && electron-builder --win --mac --linux",
+    "pack": "npm run build && electron-builder --dir",
+    "publish": "npm run build && electron-builder --publish=always"
+  },
+  "keywords": [
+    "electron",
+    "audio",
+    "recording",
+    "microphone",
+    "sdk",
+    "desktop",
+    "cross-platform"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^5.0.0",
+    "@types/node": "^20.0.0",
+    "electron": "^27.0.0",
+    "electron-builder": "^24.0.0"
+  },
+  "dependencies": {
+    "electron-updater": "^6.1.4"
+  },
+  "build": {
+    "appId": "com.valorantrecorder.voicerecorder",
+    "productName": "Valorant Voice Recorder",
+    "copyright": "Copyright © 2025 Valorant Voice Recorder",
+    "directories": {
+      "output": "release",
+      "buildResources": "build"
+    },
+    "files": [
+      "dist/**/*",
+      "preload/**/*",
+      "renderer/**/*",
+      "src/**/*",
+      "node_modules/**/*",
+      "!node_modules/**/README.md",
+      "!node_modules/**/CHANGELOG.md"
+    ],
+    "extraResources": [
+      {
+        "from": "renderer",
+        "to": "renderer"
+      }
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": ["x64", "ia32"]
+        },
+        {
+          "target": "portable",
+          "arch": ["x64", "ia32"]
+        }
+      ],
+      "icon": "build/icon.ico",
+      "requestedExecutionLevel": "requireAdministrator",
+      "publisherName": "Valorant Voice Recorder"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": true,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Valorant Voice Recorder",
+      "include": "build/installer.nsh",
+      "script": "build/installer.nsh"
+    },
+    "mac": {
+      "target": "dmg",
+      "icon": "build/icon.icns",
+      "category": "public.app-category.utilities"
+    },
+    "linux": {
+      "target": "AppImage",
+      "icon": "build/icon.png",
+      "category": "AudioVideo"
+    },
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "Harshit1o",
+        "repo": "valorant-voice-recorder"
+      }
+    ]
+  }
+}

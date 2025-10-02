@@ -1,0 +1,22 @@
+{
+  "name": "valorant-voice-recorder",
+  "version": "1.0.0",
+  "description": "Automatic voice recording for Valorant matches",
+  "main": "src/main-headless.js",
+  "scripts": {
+    "start": "electron .",
+    "start-hidden": "electron . --hidden",
+    "build": "npm run build:main",
+    "build:main": "tsc",
+    "install-service": "node scripts/install-service.js"
+  },
+  "dependencies": {
+    "electron": "^27.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.2.2"
+  },
+  "keywords": ["valorant", "recording", "voice", "audio", "gaming"],
+  "author": "Valorant Voice Recorder Team",
+  "license": "MIT"
+}
