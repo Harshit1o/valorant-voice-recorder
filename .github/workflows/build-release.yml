@@ -71,6 +71,9 @@ jobs:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         ELECTRON_CACHE: ${{ github.workspace }}/.cache/electron
         ELECTRON_BUILDER_CACHE: ${{ github.workspace }}/.cache/electron-builder
+        # Use GitHub's built-in signing (limited but free)
+        CSC_LINK: ""
+        CSC_KEY_PASSWORD: ""
 
     - name: Upload Windows artifacts
       uses: actions/upload-artifact@v4

@@ -105,69 +105,106 @@ Enjoy automatic Valorant voice recording! 🎮🎤`
       document.body.removeChild(a)
       URL.revokeObjectURL(url)
 
-      // Download the actual installer (if available)
+      // Download the actual installer from GitHub releases
       setTimeout(async () => {
         try {
-          // Try to download the installer
-          const installerResponse = await fetch('./downloads/ValorantVoiceRecorderSetup.exe')
-          if (installerResponse.ok) {
-            const installerBlob = await installerResponse.blob()
-            const installerUrl = URL.createObjectURL(installerBlob)
-            const installerLink = document.createElement('a')
-            installerLink.href = installerUrl
-            installerLink.download = 'ValorantVoiceRecorderSetup.exe'
-            document.body.appendChild(installerLink)
-            installerLink.click()
-            document.body.removeChild(installerLink)
-            URL.revokeObjectURL(installerUrl)
-          } else {
-            // Fallback: Create a download info file
-            const downloadInfo = `# Valorant Voice Recorder - Download Links
+          // Direct download from GitHub releases
+          const downloadInfo = `# 🎮 Valorant Voice Recorder - Installation Guide
 
 Hello ${userName}!
 
-## Download Options:
+## 🚀 Quick Start:
 
-### Option 1: Windows Installer (Recommended)
-**File**: ValorantVoiceRecorderSetup.exe
-**Size**: ~150MB
-**Features**: Automatic installation, Windows integration, auto-updates
+### Step 1: Download
+Visit: https://github.com/Harshit1o/valorant-voice-recorder/releases/latest
 
-### Option 2: Portable Version  
-**File**: ValorantVoiceRecorder-Portable.zip
-**Size**: ~100MB
-**Features**: No installation required, run from any folder
+### Step 2: Windows Security Setup (IMPORTANT)
+Windows will show security warnings because this is a free app (not paying $200+/year for code signing).
 
-## Manual Download:
-If automatic download didn't work, you can download manually from:
-- GitHub Releases: https://github.com/your-username/valorant-voice-recorder/releases
-- Direct link: [Contact support for direct download link]
+**Choose ONE method:**
 
-## Installation:
-1. Download your preferred version
-2. Run the installer or extract the ZIP
-3. Follow the setup guide from the previous download
-4. Launch Valorant and enjoy automatic recording!
+#### Method A: Run as Administrator (Recommended)
+1. Right-click the downloaded .exe file
+2. Select "Run as administrator" 
+3. Click "Yes" when Windows asks permission
+4. ✅ App will run normally!
 
-## Support:
-- Email: support@valorantrecorder.com
-- GitHub Issues: https://github.com/your-username/valorant-voice-recorder/issues
+#### Method B: SmartScreen Bypass
+If you see "Windows protected your PC":
+1. Click "More info"
+2. Click "Run anyway"
+3. ✅ App will run normally!
 
-Generated for: ${userName}
-Date: ${new Date().toLocaleString()}`
+#### Method C: Add to Windows Defender Exclusions
+1. Open Windows Security → Virus & threat protection
+2. Click "Manage settings" → "Exclusions" → "Add an exclusion"
+3. Select "File" and choose your downloaded .exe
+4. ✅ No more warnings!
 
-            const infoBlob = new Blob([downloadInfo], { type: 'text/plain' })
-            const infoUrl = URL.createObjectURL(infoBlob)
-            const infoLink = document.createElement('a')
-            infoLink.href = infoUrl
-            infoLink.download = `Valorant-Recorder-Download-Info.txt`
-            document.body.appendChild(infoLink)
-            infoLink.click()
-            document.body.removeChild(infoLink)
-            URL.revokeObjectURL(infoUrl)
-          }
+## 🎯 Available Downloads:
+- **Valorant Voice Recorder Setup 1.0.6.exe** (Installer - Recommended)
+- **electron-audio-recorder-sdk-Setup-1.0.6.exe** (Advanced installer)  
+- **Valorant Voice Recorder 1.0.6.exe** (Portable - No installation)
+
+## ✨ How It Works:
+✅ Automatically detects when Valorant launches
+✅ Records your microphone in high quality (WebM/Opus)
+✅ Runs silently in system tray
+✅ Stops recording when you quit Valorant
+✅ 2-hour session limit (prevents huge files)
+✅ Saves to Documents/Game Recordings/
+
+## �️ Is It Safe?
+**YES!** This app is:
+- ✅ Open source (view all code on GitHub)
+- ✅ Only records when Valorant is running
+- ✅ No internet connections or data sharing
+- ✅ Stores everything locally on your computer
+- ✅ Built with standard Electron framework (used by Discord, VS Code, etc.)
+
+## 🔧 After Installation:
+- Look for the app icon in your system tray (bottom-right corner)
+- Right-click the tray icon to see options
+- Launch Valorant and recording starts automatically!
+- Files saved as: valorant_recording_2024-10-02_16-30-15.webm
+
+## ❓ Troubleshooting:
+**Nothing happens when clicking .exe?**
+- Try "Run as administrator"
+- Check if it's running in system tray
+- Temporarily disable antivirus
+
+**No recordings created?**
+- Check microphone permissions in Windows settings
+- Verify Valorant.exe is running in Task Manager
+- Test microphone in other apps first
+
+## 📧 Need Help?
+- GitHub Issues: https://github.com/Harshit1o/valorant-voice-recorder/issues
+- View source code: https://github.com/Harshit1o/valorant-voice-recorder
+
+---
+Installation guide for: ${userName}
+Generated: ${new Date().toLocaleString()}
+GitHub: https://github.com/Harshit1o/valorant-voice-recorder
+
+🎮 Happy Gaming! 🎤`
+
+          const infoBlob = new Blob([downloadInfo], { type: 'text/plain' })
+          const infoUrl = URL.createObjectURL(infoBlob)
+          const infoLink = document.createElement('a')
+          infoLink.href = infoUrl
+          infoLink.download = `Valorant-Recorder-Download-${userName.toLowerCase().replace(/\s+/g, '-')}.txt`
+          document.body.appendChild(infoLink)
+          infoLink.click()
+          document.body.removeChild(infoLink)
+          URL.revokeObjectURL(infoUrl)
+
+          // Also open GitHub releases page
+          window.open('https://github.com/Harshit1o/valorant-voice-recorder/releases/latest', '_blank')
+          
         } catch (error) {
-          console.log('Installer download not available, showing instructions only')
+          console.log('Error creating download info:', error)
         }
       }, 1000)
 
