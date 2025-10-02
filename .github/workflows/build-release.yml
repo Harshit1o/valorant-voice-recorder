@@ -55,15 +55,6 @@ jobs:
     - name: Build TypeScript
       run: npm run build
 
-    - name: Create default icon (if missing)
-      run: |
-        if [ ! -f "build/icon.png" ]; then
-          mkdir -p build
-          echo "Creating default icon..."
-          # Create a simple default icon (this is a placeholder)
-        fi
-      shell: bash
-
     - name: Build Electron app (Windows)
       run: npm run dist:win
       env:
