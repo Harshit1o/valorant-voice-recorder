@@ -9,11 +9,7 @@ on:
 
 jobs:
   build:
-    runs-on: ${{ matrix.os }}
-    
-    strategy:
-      matrix:
-        os: [windows-latest, macos-latest, ubuntu-latest]
+    runs-on: windows-latest
     
     steps:
     - name: Check out Git repository
@@ -25,11 +21,36 @@ jobs:
         node-version: 18
         cache: 'npm'
 
-    - name: Install dependencies
-      run: npm install
+    - name: Cache Electron
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/.cache/electron
+          ~/.cache/electron-builder
+        key: ${{ runner.os }}-electron-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-electron-
+
+    - name: Configure npm
+      run: |
+        npm config set network-timeout 300000
+        npm config set fetch-retry-mintimeout 20000
+        npm config set fetch-retry-maxtimeout 120000
+        npm config set fetch-retries 5
+
+    - name: Clear npm cache
+      run: npm cache clean --force
+
+    - name: Install dependencies (without Electron)
+      run: npm install --ignore-scripts --verbose
+
+    - name: Install Electron separately
+      run: |
+        npm install electron@27.0.0 --verbose
+        npx electron --version
 
     - name: Install electron-builder
-      run: npm install --save-dev electron-builder
+      run: npm install --save-dev electron-builder --verbose
 
     - name: Build TypeScript
       run: npm run build
@@ -44,50 +65,19 @@ jobs:
       shell: bash
 
     - name: Build Electron app (Windows)
-      if: matrix.os == 'windows-latest'
       run: npm run dist:win
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-    - name: Build Electron app (macOS)
-      if: matrix.os == 'macos-latest'
-      run: npm run dist:mac
-      env:
-        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-    - name: Build Electron app (Linux)
-      if: matrix.os == 'ubuntu-latest'
-      run: npm run dist:linux
-      env:
-        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        ELECTRON_CACHE: ${{ github.workspace }}/.cache/electron
+        ELECTRON_BUILDER_CACHE: ${{ github.workspace }}/.cache/electron-builder
 
     - name: Upload Windows artifacts
-      if: matrix.os == 'windows-latest'
       uses: actions/upload-artifact@v4
       with:
         name: windows-installer
         path: |
           release/*.exe
           release/*.msi
-
-    - name: Upload macOS artifacts
-      if: matrix.os == 'macos-latest'
-      uses: actions/upload-artifact@v4
-      with:
-        name: macos-installer
-        path: |
-          release/*.dmg
-          release/*.pkg
-
-    - name: Upload Linux artifacts
-      if: matrix.os == 'ubuntu-latest'
-      uses: actions/upload-artifact@v4
-      with:
-        name: linux-installer
-        path: |
-          release/*.AppImage
-          release/*.deb
-          release/*.rpm
 
   release:
     needs: build
@@ -106,8 +96,6 @@ jobs:
       with:
         files: |
           windows-installer/*
-          macos-installer/*
-          linux-installer/*
         draft: false
         prerelease: false
         generate_release_notes: true
